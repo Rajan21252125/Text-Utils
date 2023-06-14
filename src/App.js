@@ -1,34 +1,81 @@
-import './App.css';
+import "./App.css";
+import Navbar from "./component/Navbar";
+import Form from "./component/Form";
+import React,{useState} from "react";
+import Alert from './component/Alert'
+import About from "./component/About";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+
 
 function App() {
+  const [mode , setMode] = useState('light')
+  const [alert , setAlert] = useState(null)
+  const [color , setColor] = useState('white')
+
+  const showAlert = (msg,alt) => {
+    setAlert({
+      msg:msg,
+      alt:alt
+  })
+  setTimeout(() => {
+    setAlert(null)
+    }, 2000)
+  }
+
+  
+  const switchDark = () => {
+    if(mode === 'light'){
+      setMode('dark')
+      document.body.style.backgroundColor = '#0f0936'
+      showAlert('The mode is switched to dark','success')
+      setColor('black')
+      
+    }
+    else{
+      setMode('light')
+      document.body.style.backgroundColor = 'white'
+      showAlert('The mode is switched to light','success')
+      setColor('white')
+    }
+  }
+  const redDark = () => {
+    if(mode === 'light'){
+      setMode('dark')
+      document.body.style.backgroundColor = '#4f0303'
+      showAlert('The mode is switched to dark','success')
+      setColor('red')
+    }
+    else{
+      setMode('light')
+      document.body.style.backgroundColor = 'white'
+      showAlert('The mode is switched to light','success')
+      setColor('darkRed')
+    }
+  }
+  const greenDark = () => {
+    if(mode === 'light'){
+      setMode('dark')
+      document.body.style.backgroundColor = '#1e4a01'
+      showAlert('The mode is switched to dark','success')
+      setColor('green')
+    }
+    else{
+      setMode('light')
+      document.body.style.backgroundColor = 'white'
+      showAlert('The mode is switched to light','success')
+      setColor('darkGreen')
+    }
+  }
   return (
-    <>
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
-  <div className="container-fluid">
-    <a className="navbar-brand" href="/">TextUtils</a>
-    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span className="navbar-toggler-icon"></span>
-    </button>
-    <div className="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-        <li className="nav-item">
-          <a className="nav-link active" aria-current="page" href="/">Home</a>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link" href="/">About</a>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link disabled" href="&#" tabindex="-1" aria-disabled="true">Disabled</a>
-        </li>
-      </ul>
-      <form className="d-flex">
-        <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-        <button className="btn btn-outline-success" type="submit">Search</button>
-      </form>
-    </div>
-  </div>
-</nav>
-    </>
+    <Router>
+      <Navbar title="TextUtils"mode={mode} toggleDark={switchDark} redDark={redDark} greenDark={greenDark}/>
+      <Alert alert={alert}/>
+      <Routes>
+        <Route exact path="/" element={<Form heading="Enter a text here" mode={mode} showAlert={showAlert} color={color} />}/>
+        <Route exact path="/about" element={<About mode={mode} showAlert={showAlert}/>} />
+      </Routes>
+    </Router>
   );
 }
 
